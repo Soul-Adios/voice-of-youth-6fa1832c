@@ -1,12 +1,37 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from "react";
+import { Navigation } from "@/components/Navigation";
+import { HomePage } from "@/components/HomePage";
+import { SubmissionForm } from "@/components/SubmissionForm";
+import { Dashboard } from "@/components/Dashboard";
+import { Analytics } from "@/components/Analytics";
+
+type ViewType = 'home' | 'submit' | 'dashboard' | 'analytics';
 
 const Index = () => {
+  const [currentView, setCurrentView] = useState<ViewType>('home');
+
+  const renderCurrentView = () => {
+    switch (currentView) {
+      case 'home':
+        return <HomePage onNavigate={setCurrentView} />;
+      case 'submit':
+        return <SubmissionForm />;
+      case 'dashboard':
+        return <Dashboard />;
+      case 'analytics':
+        return <Analytics />;
+      default:
+        return <HomePage onNavigate={setCurrentView} />;
+    }
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      <Navigation 
+        currentView={currentView}
+        onViewChange={setCurrentView}
+      />
+      {renderCurrentView()}
     </div>
   );
 };
